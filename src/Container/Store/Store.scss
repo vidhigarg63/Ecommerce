@@ -1,0 +1,7 @@
+.ProductDisplay{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    width: 80%;
+    margin: 10px auto;
+}

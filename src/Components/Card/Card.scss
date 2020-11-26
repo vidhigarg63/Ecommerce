@@ -1,0 +1,23 @@
+.Card{
+    text-align: center;
+    font-family: muli, sans-serif;
+    .PriceTag{
+        color: red;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .Description{
+        font-size: 20px;
+        margin: 20px 0px;
+    }
+    .Title{
+        margin: 10px;
+        font-size: 22px;
+        font-weight: medium;
+    }
+    .Button{
+        display: flex;
+        justify-content: space-evenly;
+        margin: 30px 0px;
+    }
+}

@@ -1,0 +1,16 @@
+.NavList{
+    display: flex;
+    align-items: center;
+    height: 8vh;  
+    font-family: muli, sans-serif;  
+}
+
+a{
+    font-family: muli, sans-serif;
+    font-size: 16px;
+    color: rgba($color: #fff, $alpha: 0.50);
+    text-decoration: none;
+    &:hover{
+        color: rgba($color: yellow, $alpha: 1.0);
+    }
+}

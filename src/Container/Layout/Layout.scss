@@ -1,0 +1,16 @@
+.Header{
+    background-color: #0046BE;
+    display: flex;
+    align-items: center;
+    .Logo{
+        flex: 0;
+        padding: 0px 20px 0px 100px;
+    }
+    .InputFeild{
+        flex: 2;
+    }
+    .Navigation{
+        justify-items: flex-end;
+        flex: 1;
+    }
+}

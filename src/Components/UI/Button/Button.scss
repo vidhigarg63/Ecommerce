@@ -1,0 +1,28 @@
+.AddToCart ,.BuyNow{
+    padding: 15px 20px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-family: muli, sans-serif;
+    box-shadow: 2px 3px 2px 2px #ccc;
+    outline: none;
+    cursor: pointer;
+    &:hover{
+        transform: scale(1.02);
+        transition: .7s ease;
+    }
+}
+
+.AddToCart{
+    background-color: #FFCE00;
+    color: black;
+    &:hover{
+        background-color: rgba($color: #FFCE00, $alpha: 0.75);
+    }
+}
+.BuyNow{
+    background-color: #0046BE;
+    &:hover{
+        background-color: rgba($color: #083685, $alpha: 1.0);
+    }
+}
