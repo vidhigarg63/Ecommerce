@@ -56,9 +56,7 @@ class Store extends Component {
             this.postData({...ProductToAdd[0], quantity : 1})
         }
 
-        if(Object.keys(response.data).length > 0 || response.data === null){
-
-
+        if(response.data !== null){
             const shouldPost = Object.keys(response.data).filter(key => {
                 if(response.data[key].id === id){
                     return true

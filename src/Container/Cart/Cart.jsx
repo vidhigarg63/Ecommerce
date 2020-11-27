@@ -16,25 +16,38 @@ class Cart extends Component {
         const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json')
         const response = await axios.get(API_URL_CART);
 
-        let cart = [];
-        Object.entries(response.data).map((key) => {
-            cart.push({...key[1],uniqueKey : key[0] });
-        })
-        this.setState({ CartProduct : cart });
+        if(response.data !== null){
+            let cart = [];
+            Object.entries(response.data).map((key) => cart.push({...key[1],uniqueKey : key[0] }));
+            this.setState({ CartProduct : cart });
+        }
     }
 
-    incrementHandler = async(id) => {
-        const oldState = this.state.CartProduct;        
-
-        const updatedObject = oldState.filter(product => {
-            if(product.uniqueKey === id){
-                return product.quantity = product.quantity + 1;  
-            }
-        })
-        console.log(updatedObject);
-
-        const UpdatedStateObject = oldState.map(product => product)
-        console.log(UpdatedStateObject);
+    incrementHandler = async(id, type) => {
+        const oldState = this.state.CartProduct; 
+        let updatedObject = null
+        switch(type){
+            case 'inc':  updatedObject = oldState.filter(product => {
+                let data = null;        
+                if(product.uniqueKey === id){
+                    data = product.quantity = product.quantity + 1;
+                    }
+                    return data;
+                })
+                break;
+            
+            case 'dec' :  updatedObject = oldState.filter(product => {
+                let data = null;
+                if(product.uniqueKey === id){
+                    data = product.quantity = product.quantity - 1;  
+                    }
+                    return data;
+                })
+                break;
+            default : console.log("Choice not Valid");
+        }
+        
+        console.log({updatedObject});
 
         try{
             const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
@@ -43,33 +56,8 @@ class Cart extends Component {
         catch(error){
             console.log(error);
         }
-        this.setState({ CartProduct : UpdatedStateObject });
+        this.setState({ CartProduct : oldState });
     }
-
-    decrementHandler = async(id) => {
-        const oldState = this.state.CartProduct;        
-
-        const updatedObject = oldState.filter(product => {
-            if(product.uniqueKey === id){
-                return product.quantity = product.quantity - 1;  
-            }
-        })
-        console.log(updatedObject);
-
-        const UpdatedStateObject = oldState.map(product => product)
-        console.log(UpdatedStateObject);
-
-        try{
-            const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
-            await axios.put(API_URL_CART, updatedObject[0]);
-        }
-        catch(error){
-            console.log(error);
-        }
-        this.setState({ CartProduct : UpdatedStateObject });
-    }
-
-
 
     render() {
         let displayData = '';
@@ -84,8 +72,8 @@ class Cart extends Component {
                             image = {"/Shoes/"+product.image}
                             style = {{width : '80px', height : '80px'}}
                             quantity = {product.quantity}
-                            incrementHandler = {() => this.incrementHandler(product.uniqueKey)}
-                            decrementHandler = {() => this.decrementHandler(product.uniqueKey)}
+                            id = {product.uniqueKey}
+                            incrementHandler = {this.incrementHandler}
                         />
                     );
                 })

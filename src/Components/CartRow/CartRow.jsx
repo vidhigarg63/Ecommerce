@@ -9,10 +9,9 @@ function CartRow(props) {
             <p>{props.description}</p>
 
             <section>
-                <button onClick={props.decrementHandler} disabled = {props.quantity < 1}><i className="fas fa-minus-circle"/></button>
-                {/* <i className="fas fa-minus-circle" onClick={props.decrementHandler} disabled = {props.quantity < 1} ></i> */}
+                <button onClick={() => props.incrementHandler(props.id, 'dec')} disabled = {props.quantity < 1}><i className="fas fa-minus-circle"/></button>
                 <span className='quantitySpan'>{props.quantity}</span>
-                <i className="fas fa-plus-circle" onClick={props.incrementHandler}></i>
+                <i className="fas fa-plus-circle" onClick={() => props.incrementHandler(props.id, 'inc')}></i>
             </section>
             
             <span className='priceSpan'>$ {props.price * props.quantity}</span>
