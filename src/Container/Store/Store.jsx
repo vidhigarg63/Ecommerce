@@ -44,11 +44,60 @@ class Store extends Component {
         // Object to be added into cart
         const ProductToAdd = Object.values(this.state.responseData).filter(products => {
             return (products.id === id)
-        })            
+        });
+
+
+        const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json');
+        const response = await axios.get(API_URL_CART);
+        // console.log(response.data);
+        
+        // check cart
+        if(response.data === null){
+            this.postData({...ProductToAdd[0], quantity : 1})
+        }
+
+        if(Object.keys(response.data).length > 0 || response.data === null){
+
+
+            const shouldPost = Object.keys(response.data).filter(key => {
+                if(response.data[key].id === id){
+                    return true
+                }
+            });
+
+            if(shouldPost.length > 0){
+                // method to put new Cart data
+                shouldPost.forEach(key => {
+    
+                // now we will put data
+                    const DataToPut = {
+                        ...response.data[key],
+                        quantity : response.data[key].quantity ? response.data[key].quantity+1 : 1,
+                    }
+                    this.putData(DataToPut,key)                    
+                });
+            }else if(shouldPost.length === 0){
+                this.postData({...ProductToAdd[0], quantity : 1});
+            }
+            
+            console.log(shouldPost);
+        }
+    }
+
+    postData = async(data) => {
         try{
             const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json')
-            const postResponse = await axios.post(API_URL_CART, ProductToAdd[0]);
+            const postResponse = await axios.post(API_URL_CART, data);
             console.log(postResponse);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    putData = async(data, id) => {
+        try{
+            const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
+            const postResponse = await axios.put(API_URL_CART, data);
         }
         catch(error){
             console.log(error);

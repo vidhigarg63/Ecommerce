@@ -12,46 +12,64 @@ class Cart extends Component {
     }
     
     async componentDidMount(){
+        // Making Request to get cart Elements.
         const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json')
         const response = await axios.get(API_URL_CART);
 
-        const CartProduct = []
-        for (const key in response.data) {
-            CartProduct.push(response.data[key]);
-        }
-        
-        // Checking out Quantities
-        const counts = {};
-        CartProduct.map(products => {
-            counts[products.description] = counts[products.description] ? counts[products.description] + 1 : 1;
-        });
+        let cart = [];
+        Object.entries(response.data).map((key) => {
+            cart.push({...key[1],uniqueKey : key[0] });
+        })
+        this.setState({ CartProduct : cart });
+    }
 
-        // Creating new Object
-        const newCart = CartProduct.map(products => {
-            return {
-                desc : products.description,
-                price : products.price,
-                image : products.image,
-                id : products.id,
-                quantity : counts[products.description]
+    incrementHandler = async(id) => {
+        const oldState = this.state.CartProduct;        
+
+        const updatedObject = oldState.filter(product => {
+            if(product.uniqueKey === id){
+                return product.quantity = product.quantity + 1;  
             }
         })
-                
-        // Unique Recordss
-        const unique = [...new Set(newCart.map(item => item.id))];
-        const finalCart = unique.map(productid => {
-            return {
-                id : productid,
-                description : newCart.find( product => product.id === productid ).desc,
-                image : newCart.find( product => product.id === productid ).image,
-                price : newCart.find( product => product.id === productid ).price,
-                quantity : newCart.find( product => product.id === productid ).quantity,
-            }
-        })      
+        console.log(updatedObject);
 
-        console.log(finalCart)
-        this.setState({ CartProduct : finalCart });
+        const UpdatedStateObject = oldState.map(product => product)
+        console.log(UpdatedStateObject);
+
+        try{
+            const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
+            await axios.put(API_URL_CART, updatedObject[0]);
+        }
+        catch(error){
+            console.log(error);
+        }
+        this.setState({ CartProduct : UpdatedStateObject });
     }
+
+    decrementHandler = async(id) => {
+        const oldState = this.state.CartProduct;        
+
+        const updatedObject = oldState.filter(product => {
+            if(product.uniqueKey === id){
+                return product.quantity = product.quantity - 1;  
+            }
+        })
+        console.log(updatedObject);
+
+        const UpdatedStateObject = oldState.map(product => product)
+        console.log(UpdatedStateObject);
+
+        try{
+            const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
+            await axios.put(API_URL_CART, updatedObject[0]);
+        }
+        catch(error){
+            console.log(error);
+        }
+        this.setState({ CartProduct : UpdatedStateObject });
+    }
+
+
 
     render() {
         let displayData = '';
@@ -59,14 +77,15 @@ class Cart extends Component {
             displayData = <p>Cart is empty</p>
         }else{
             displayData = (
-                this.state.CartProduct.map((products,index) => {
+                this.state.CartProduct.map(product => {
                     return (
-                        <CartRow key={products.id + index} 
-                        image={`/Shoes/${products.image}`} 
-                        style={{width : '100px'}}
-                        description={products.description}
-                        price={products.price}
-                        quantity={products.quantity}
+                        <CartRow key = {product.uniqueKey}
+                            price = {product.price}
+                            image = {"/Shoes/"+product.image}
+                            style = {{width : '80px', height : '80px'}}
+                            quantity = {product.quantity}
+                            incrementHandler = {() => this.incrementHandler(product.uniqueKey)}
+                            decrementHandler = {() => this.decrementHandler(product.uniqueKey)}
                         />
                     );
                 })
