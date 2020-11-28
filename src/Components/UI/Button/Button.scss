@@ -13,7 +13,7 @@
     }
 }
 
-.AddToCart{
+.AddToCart, .Checkout{
     background-color: #FFCE00;
     color: black;
     &:hover{
@@ -25,4 +25,26 @@
     &:hover{
         background-color: rgba($color: #083685, $alpha: 1.0);
     }
+}
+.remove{
+    color: rgba($color: #0046BE, $alpha: 1.0);
+    padding: 5px 10px;
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 15px;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+.Checkout{
+    display: block;
+    padding: 10px 10px;
+    width: 100%;
+    font-weight: bold;
+    font-family: muli, sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 2px 3px 2px 2px #ccc;
 }

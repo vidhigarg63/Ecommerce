@@ -1,0 +1,13 @@
+.OrderSummaryRow{
+    display: flex;
+    justify-content: space-between;
+    #tax{
+        font-size: 16px;
+    }
+    #finalTotal{
+        font-weight: bold;
+        font-size: 20px;
+        color: black;
+        margin: 25px 0px;
+    }
+}

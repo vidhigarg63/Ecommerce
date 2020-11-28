@@ -53,7 +53,7 @@ class Store extends Component {
         
         // check cart
         if(response.data === null){
-            this.postData({...ProductToAdd[0], quantity : 1})
+            this.postData({...ProductToAdd[0], quantity : 1, totalPrice : ProductToAdd[0].price})
         }
 
         if(response.data !== null){
@@ -68,14 +68,15 @@ class Store extends Component {
                 shouldPost.forEach(key => {
     
                 // now we will put data
-                    const DataToPut = {
-                        ...response.data[key],
-                        quantity : response.data[key].quantity ? response.data[key].quantity+1 : 1,
+                const DataToPut = {
+                    ...response.data[key],
+                    quantity : response.data[key].quantity ? response.data[key].quantity+1 : 1,
+                    totalPrice : response.data[key].totalPrice ? response.data[key].totalPrice += response.data[key].price : response.data[key].price,
                     }
-                    this.putData(DataToPut,key)                    
+                this.putData(DataToPut,key)                    
                 });
             }else if(shouldPost.length === 0){
-                this.postData({...ProductToAdd[0], quantity : 1});
+                this.postData({...ProductToAdd[0], quantity : 1, totalPrice : ProductToAdd[0].price});
             }
             
             console.log(shouldPost);
