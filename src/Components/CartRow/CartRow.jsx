@@ -15,11 +15,11 @@ function CartRow(props) {
                     <p style={{marginBottom : '15px'}}>{props.description}</p>
 
                     {props.quantity > 1 ? 
-                        <button className='DeleteButton' onClick={() => props.productChangeHandler(props.id, 'dec')} disabled = {props.quantity === 1}><i className="fas fa-minus-circle"/></button>: null
+                        <button className='DeleteButton' onClick={() => props.productChangeHandler(props.id, 'dec')}><i className="fas fa-minus-circle"/></button>: null
                     }
                     <span className='QuantitySpan'>{props.quantity}</span>
-                    <i className="fas fa-plus-circle" onClick={() => props.productChangeHandler(props.id, 'inc')}></i>
-
+                    <button className='DeleteButton' onClick={() => props.productChangeHandler(props.id, 'inc')}><i className="fas fa-plus-circle"/></button>
+            
                     <Button className='RemoveButton' buttonType={'remove'} clicked={() => props.removeHandler(props.id)}><i className="far fa-trash-alt"></i> Remove</Button> 
                 </section>
                 
@@ -34,7 +34,6 @@ function CartRow(props) {
                     <h4>Product Total </h4>
                     <h3>$ {props.price * props.quantity}</h3>
                 </article>
-            <hr style={{width : '100%', marginTop: '20px'}}/>
             </section>
         </div>
     )

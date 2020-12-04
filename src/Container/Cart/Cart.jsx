@@ -16,12 +16,13 @@ class Cart extends Component {
     productChangeHandler = async(id, type) => {
         const oldState = this.state.CartProduct; 
         let updatedObject = null
+        console.log(type);
         switch(type){
             case 'inc':  updatedObject = oldState.filter(product => {
-                let data = null;       
+                let data = null;   
                 if(product.uniqueKey === id){
-                    data = product.quantity = product.quantity + 1;
-                    product.totalPrice += product.price
+                        data = product.quantity = product.quantity + 1;
+                        product.totalPrice += product.price
                     }
                     return data;
                 })
@@ -30,8 +31,8 @@ class Cart extends Component {
             case 'dec' :  updatedObject = oldState.filter(product => {
                 let data = null;
                 if(product.uniqueKey === id){
-                    data = product.quantity -=  1;
-                    product.totalPrice -= product.price  
+                        data = product.quantity -=  1;
+                        product.totalPrice -= product.price  
                     }
                     return data;
                 })
