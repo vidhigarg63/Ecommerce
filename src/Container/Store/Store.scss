@@ -1,7 +1,9 @@
 .ProductDisplay{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
     place-items: center;
     width: 80%;
     margin: 10px auto;
+    min-height: 100vh;
 }

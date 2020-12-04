@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Store.scss'
-import axios from 'axios';
+import axios from '../../Axios/Axios';
 import Spinner from '../../Components/UI/Spinner/Spinner';
 import Card from '../../Components/Card/Card';
 
@@ -17,7 +17,7 @@ class Store extends Component {
     
     async componentDidMount(){
         try {
-            const API_URL = 'https://e-commerce-ddfd4.firebaseio.com/products.json';
+            const API_URL = '/products.json';
             const response = await axios.get(API_URL);
             this.setState({ responseData : response.data, rendered : true });
         } catch (error) {
@@ -47,7 +47,7 @@ class Store extends Component {
         });
 
 
-        const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json');
+        const API_URL_CART = ('/cart.json');
         const response = await axios.get(API_URL_CART);
         // console.log(response.data);
         
@@ -85,7 +85,7 @@ class Store extends Component {
 
     postData = async(data) => {
         try{
-            const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json')
+            const API_URL_CART = ('/cart.json')
             const postResponse = await axios.post(API_URL_CART, data);
             console.log(postResponse);
         }
@@ -95,8 +95,8 @@ class Store extends Component {
     }
     putData = async(data, id) => {
         try{
-            const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
-            const postResponse = await axios.put(API_URL_CART, data);
+            const API_URL_CART = (`/cart/${id}.json`)
+            await axios.put(API_URL_CART, data);
         }
         catch(error){
             console.log(error);

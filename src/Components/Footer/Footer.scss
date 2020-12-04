@@ -1,0 +1,35 @@
+.Footer{
+    height: 30vh;
+    background-color: #F4F6F9;
+    font-family: muli, sans-serif;
+    input{
+        padding: 8px 5px;
+        outline: none;
+        width: 250px;
+        font-size: large;
+    }
+    .Subscribe{
+        padding: 8px 10px;
+        background-color: #0046BE;
+        color: white;
+        
+        font-size: large;
+        border: none;
+    }
+    .SubscribeField{
+        margin: 10px auto;
+        .Subscribe{
+            margin : 0px 0px 0px 5px;
+            outline: none;
+        }
+    }
+    .Newsletter{
+        width: 430px;
+        margin: 0px auto;
+        padding: 60px 20px;
+    }
+    p{
+        margin: 10px 0px;
+    }
+    
+}

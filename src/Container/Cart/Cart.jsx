@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios';
+import axios from '../../Axios/Axios';
 import CartRow from '../../Components/CartRow/CartRow.jsx';
 import './Cart.scss';
 import Checkout from '../../Components/Checkout/Checkout.jsx';
@@ -9,8 +9,14 @@ class Cart extends Component {
         super(props)
         this.state = {
             CartProduct : [],
-            totalPrice : ''
+            totalPrice : 0,
+            discount : 0,
+            GST : 0,
+            priceAfterDiscount : 0,
+            shouldDisable : false,
+            error : false,
         }
+        this.inputRef = React.createRef();
     }
     
     productChangeHandler = async(id, type) => {
@@ -43,7 +49,7 @@ class Cart extends Component {
         console.log({updatedObject});
 
         try{
-            const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
+            const API_URL_CART = (`/cart/${id}.json`)
             await axios.put(API_URL_CART, updatedObject[0]);
         }
         catch(error){
@@ -54,18 +60,19 @@ class Cart extends Component {
         const totalPrice = oldState.map(product => {
             return product.totalPrice;
         }).reduce((acc, curr) => acc + curr)
-        this.setState({ CartProduct : oldState, totalPrice : totalPrice });
+        const GST = parseFloat((totalPrice * 0.075).toPrecision(4));
+        this.setState({ CartProduct : oldState, totalPrice : totalPrice, GST : GST });
     }
 
     removeHandler = async(id) => {
         console.log(id);
-        const API_URL_CART = (`https://e-commerce-ddfd4.firebaseio.com/cart/${id}.json`)
+        const API_URL_CART = (`/cart/${id}.json`)
         await axios.delete(API_URL_CART);
         await this.getData();   
     }
 
     getData = async() => {
-        const API_URL_CART = ('https://e-commerce-ddfd4.firebaseio.com/cart.json')
+        const API_URL_CART = ('/cart.json')
         const response = await axios.get(API_URL_CART);
         
         if(response.data !== null){
@@ -82,12 +89,38 @@ class Cart extends Component {
             const totalPrice = cart.map(product => {
                 return product.totalPrice;
             }).reduce((acc, curr) => acc + curr)
-            
-            this.setState({ CartProduct : cart, totalPrice : totalPrice });
+            const GST = parseFloat((totalPrice * 0.075).toPrecision(4));
+            this.setState({ CartProduct : cart, totalPrice : totalPrice, GST : GST });
         }
         else if(response.data === null){
-            this.setState({ CartProduct : [], totalPrice : '' });
+            this.setState({ CartProduct : [], totalPrice : '', GST : 0 });
         }
+    }
+
+    // PromoCode handler
+    inputHandler = async(event) => {
+        
+        // getting the input value for the coupon feild
+        const coupon = this.inputRef.current.value;
+
+        const API_URL_CART = ('/coupons.json')
+        const {data} = await axios.get(API_URL_CART);
+        
+        // Gets and object so we convert into array use 0 index as code and 1 as discount %
+        const discount = Object.entries(data).filter(entries => {
+            return entries[0] === coupon;
+        });
+        
+        if(discount.length > 0){
+            const totaldiscount = discount[0][1];
+            const initialPrice = (this.state.totalPrice * 1.15);
+            const discountPrice = ((initialPrice * totaldiscount) / 100).toPrecision(4);
+            const priceAfterDiscount = (initialPrice - discountPrice).toPrecision(4);
+            this.setState({ discount: totaldiscount, shouldDisable: true, error : false });
+        }else{
+            this.setState({ error : true , discount : 0 });
+        }
+        
     }
 
     async componentDidMount(){
@@ -117,6 +150,12 @@ class Cart extends Component {
                 })
             );
         }
+        
+        const {discount, priceAfterDiscount} = this.state;
+        let finalPrice = (this.state.totalPrice * 1.15).toPrecision(4)
+        if(discount !== 0){
+            finalPrice = ((this.state.totalPrice * 1.15) - this.state.totalPrice * discount / 100 ).toPrecision(4)
+        }
 
         return (
             <div>
@@ -128,11 +167,18 @@ class Cart extends Component {
                     <div>
                         <Checkout 
                             price = {this.state.totalPrice}
-                            totalPrice = {(this.state.totalPrice * 1.15).toPrecision(4)}
-                            GST = {(this.state.totalPrice * 0.075).toPrecision(4)}
-                            QST={(this.state.totalPrice * 0.075).toPrecision(4)}
+                            totalPrice = {finalPrice}
+                            GST = {this.state.GST}
+                            QST = {this.state.GST}
+                            ref = {this.inputRef}
+                            discount = {this.state.discount}
+                            inputHandler = {this.inputHandler}
+                            shouldDisable = {this.state.shouldDisable}
+                            error = {this.state.error}
                         />
                     </div>
+
+                    
                 </section>
             </div>
         )

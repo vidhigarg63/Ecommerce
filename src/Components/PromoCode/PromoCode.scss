@@ -1,0 +1,17 @@
+.PromoCode{
+    display: flex;
+    input{
+        font-size: 18px;
+        padding: 0px 5px;
+    }
+    .input, Button{
+        margin: 10px 1px 0px 0px;
+    }
+    .inputError{
+        border: 1px solid red;
+        outline: red;
+    }
+}
+.Error{
+    color: red;
+}

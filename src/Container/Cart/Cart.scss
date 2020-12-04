@@ -1,8 +1,9 @@
 .Cart{
     display: flex;
+    min-height: 100vh;
     .ProductList{
         width: 68vw;
-        background-color: #F3F3F3;
+        background-color: white;
         margin: 20px auto;
         font-family: muli, sans-serif;
         padding: 20px;

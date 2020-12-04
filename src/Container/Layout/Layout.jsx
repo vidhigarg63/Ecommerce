@@ -3,6 +3,7 @@ import './Layout.scss'
 import Toolbar from '../../Components/Navigation/Toolbar';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Spinner from '../../Components/UI/Spinner/Spinner.js';
+import Footer from '../../Components/Footer/Footer';
 
 const LazyStore = React.lazy( () => import('../../Container/Store/Store'));
 const LazyCart = React.lazy( () => import('../Cart/Cart'));
@@ -41,7 +42,7 @@ class Layout extends Component {
                         )}/>
                         <Redirect exact from='/' to='/Store'/>
                     </Switch>
-
+                    <Footer/>
             </BrowserRouter>         
             </div>
         )
