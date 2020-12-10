@@ -145,6 +145,7 @@ class Cart extends Component {
                             id = {product.uniqueKey}
                             productChangeHandler = {this.productChangeHandler}
                             removeHandler = {this.removeHandler}
+                            {...this.porps}
                         />
                     );
                 })
@@ -175,6 +176,8 @@ class Cart extends Component {
                             inputHandler = {this.inputHandler}
                             shouldDisable = {this.state.shouldDisable}
                             error = {this.state.error}
+                            {...this.props}
+                            cart = {this.state.CartProduct}
                         />
                     </div>
 

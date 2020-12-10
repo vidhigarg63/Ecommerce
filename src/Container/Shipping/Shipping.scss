@@ -1,0 +1,28 @@
+.Shipping{
+    min-height: 100vh;
+    font-family: muli, sans-serif;
+    width: 50%;
+    margin: 10px auto;
+    .OrderList{
+        background-color: #F4F6F9;
+        margin : 10px 0px;
+        padding : 10px 0px;
+        .OrderPreview{
+            line-height: 24px;
+            padding: 0px 10px 10px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .DetailButton{
+                font-weight: bold;
+                padding : 8px 15px;
+                letter-spacing: 1px;
+                
+                
+            }
+        }
+    }
+    .ProductsDetails{
+        padding: 10px;
+    }
+}

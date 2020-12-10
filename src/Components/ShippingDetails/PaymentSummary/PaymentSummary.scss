@@ -1,0 +1,13 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.PaymentSummary{
+    padding: 10px 5px;
+    width: 100%;
+    .Payment{
+        display: flex;
+        justify-content: space-between;
+    }
+}

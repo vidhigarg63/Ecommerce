@@ -3,6 +3,7 @@ import './Store.scss'
 import axios from '../../Axios/Axios';
 import Spinner from '../../Components/UI/Spinner/Spinner';
 import Card from '../../Components/Card/Card';
+import NotFound from '../../Components/Error/NotFound';
 
 class Store extends Component {
     constructor(props) {
@@ -110,7 +111,7 @@ class Store extends Component {
             response = <h1>Something Went Wrong</h1>;
         }
 
-        // data is present and not match found
+        // data is present and no match found
         else if(!this.state.found){
             response = Object.keys(this.state.responseData).map(keys => {
                 return (
@@ -125,8 +126,14 @@ class Store extends Component {
                 );
             });
         }
+        
         else if(this.state.found && this.state.SearchData.length === 0){
-            response = <h2>Not Found</h2>
+            response = (
+                <NotFound>
+                    <h1>Product Not Found</h1>
+                    <p>We can't find the product you are looking for</p>
+                </NotFound>
+            )
         }
 
         else if(this.state.found){

@@ -1,7 +1,7 @@
 import React from 'react';
 import OrderSummaryRow from '../OrderSummaryRow/OrderSummaryRow';
+import Paypal from '../Paypal/Paypal';
 import PromoCode from '../PromoCode/PromoCode';
-import Button from '../UI/Button/Button';
 import './Checkout.scss';
 
 const Checkout = React.forwardRef((props, ref) => {
@@ -20,7 +20,7 @@ const Checkout = React.forwardRef((props, ref) => {
                 <OrderSummaryRow class='tax' value={ '$'+parseFloat(props.QST + props.price + props.GST)} >Products Total</OrderSummaryRow>
                 <OrderSummaryRow class='discount' value={props.discount+'%' } >Discount</OrderSummaryRow>
                 <OrderSummaryRow class='finalTotal' value={'$'+props.totalPrice} >Total</OrderSummaryRow>
-                <Button buttonType='Checkout'>Checkout</Button>
+                <Paypal price = {props.totalPrice} cart = {props.cart}/>
             </section>
         </div>
     )
