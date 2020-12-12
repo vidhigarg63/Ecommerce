@@ -4,6 +4,7 @@ import axios from '../../Axios/Axios';
 import Spinner from '../../Components/UI/Spinner/Spinner';
 import Card from '../../Components/Card/Card';
 import NotFound from '../../Components/Error/NotFound';
+import { AuthContext } from '../../Context/AuthContext'
 
 class Store extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Store extends Component {
             rendered : false,
         }
     }
+    static contextType = AuthContext;
     
     async componentDidMount(){
         try {
@@ -39,22 +41,23 @@ class Store extends Component {
             console.log(data);
             this.setState({ SearchData : data });
         }
-      }
+    }
 
     addToCartHandler = async(id) => {
+        const {email} = this.context.currentUser
         // Object to be added into cart
         const ProductToAdd = Object.values(this.state.responseData).filter(products => {
             return (products.id === id)
         });
 
-
+        // getting prev cart
         const API_URL_CART = ('/cart.json');
         const response = await axios.get(API_URL_CART);
         // console.log(response.data);
         
         // check cart
         if(response.data === null){
-            this.postData({...ProductToAdd[0], quantity : 1, totalPrice : ProductToAdd[0].price})
+            this.postData({...ProductToAdd[0], quantity : 1, totalPrice : ProductToAdd[0].price, userEmail : email})
         }
 
         if(response.data !== null){
@@ -73,11 +76,12 @@ class Store extends Component {
                     ...response.data[key],
                     quantity : response.data[key].quantity ? response.data[key].quantity+1 : 1,
                     totalPrice : response.data[key].totalPrice ? response.data[key].totalPrice += response.data[key].price : response.data[key].price,
+                    userEmail : email
                     }
                 this.putData(DataToPut,key)                    
                 });
             }else if(shouldPost.length === 0){
-                this.postData({...ProductToAdd[0], quantity : 1, totalPrice : ProductToAdd[0].price});
+                this.postData({...ProductToAdd[0], quantity : 1, totalPrice : ProductToAdd[0].price, userEmail : email});
             }
             
             console.log(shouldPost);

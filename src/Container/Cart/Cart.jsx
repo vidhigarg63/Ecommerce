@@ -3,8 +3,13 @@ import axios from '../../Axios/Axios';
 import CartRow from '../../Components/CartRow/CartRow.jsx';
 import './Cart.scss';
 import Checkout from '../../Components/Checkout/Checkout.jsx';
+import { AuthContext } from '../../Context/AuthContext';
+import NotFound from '../../Components/Error/NotFound';
+import empty from '../../assets/Images/empty.jpg';
+import Spinner from '../../Components/UI/Spinner/Spinner';
 
 class Cart extends Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props)
         this.state = {
@@ -15,6 +20,7 @@ class Cart extends Component {
             priceAfterDiscount : 0,
             shouldDisable : false,
             error : false,
+            show : false
         }
         this.inputRef = React.createRef();
     }
@@ -77,29 +83,32 @@ class Cart extends Component {
         
         if(response.data !== null){
             let cart = [];
-            Object.entries(response.data).map((key) => {
-                return cart.push(
-                    {
+            Object.entries(response.data).filter(key => {
+                if(key[1].userEmail === this.context.currentUser.email){
+                    return cart.push({
                         ...key[1],
-                        uniqueKey : key[0],
+                        uniqueKey : key[0]
                     })
-            });
+                }
+            })
+            console.log(cart);
 
             // getting total price
-            const totalPrice = cart.map(product => {
-                return product.totalPrice;
-            }).reduce((acc, curr) => acc + curr)
-            const GST = parseFloat((totalPrice * 0.075).toPrecision(4));
-            this.setState({ CartProduct : cart, totalPrice : totalPrice, GST : GST });
+            if(cart.length > 0){
+                const totalPrice = cart.map(product => {
+                    return product.totalPrice;
+                }).reduce((acc, curr) => acc + curr)
+                const GST = parseFloat((totalPrice * 0.075).toPrecision(4));
+                this.setState({ CartProduct : cart, totalPrice : totalPrice, GST : GST, show : true });
+            }
         }
         else if(response.data === null){
-            this.setState({ CartProduct : [], totalPrice : '', GST : 0 });
+            this.setState({ CartProduct : [], totalPrice : '', GST : 0, show : false });
         }
     }
 
     // PromoCode handler
     inputHandler = async(event) => {
-        
         // getting the input value for the coupon feild
         const coupon = this.inputRef.current.value;
 
@@ -129,10 +138,8 @@ class Cart extends Component {
     }
 
     render() {
-        let displayData = '';
-        if(this.state.CartProduct.length === 0){
-            displayData = <p>Cart is empty</p>
-        }else{
+        let displayData = <Spinner />;
+        if(this.state.show){
             displayData = (
                 this.state.CartProduct.map(product => {
                     return (
@@ -150,9 +157,17 @@ class Cart extends Component {
                     );
                 })
             );
+            
+        }
+        if(!this.state.show){
+            displayData = ( 
+            <NotFound NotFound = {empty}>
+                <p>Looks like your cart is Empty</p>
+            </NotFound>
+            )
         }
         
-        const {discount, priceAfterDiscount} = this.state;
+        const {discount} = this.state;
         let finalPrice = (this.state.totalPrice * 1.15).toPrecision(4)
         if(discount !== 0){
             finalPrice = ((this.state.totalPrice * 1.15) - this.state.totalPrice * discount / 100 ).toPrecision(4)
@@ -165,6 +180,7 @@ class Cart extends Component {
                         {displayData}
                     </section>
 
+                    {this.state.show ?
                     <div>
                         <Checkout 
                             price = {this.state.totalPrice}
@@ -179,9 +195,8 @@ class Cart extends Component {
                             {...this.props}
                             cart = {this.state.CartProduct}
                         />
-                    </div>
-
-                    
+                    </div>: null
+                    }
                 </section>
             </div>
         )
