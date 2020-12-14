@@ -4,20 +4,29 @@ import axios from '../../Axios/Axios'
 import ShippingCard from '../../Components/ShippingCard/ShippingCard';
 import ShippingDetails from '../../Components/ShippingDetails/ShippingDetails';
 import Button from '../../Components/UI/Button/Button'
+import {AuthContext} from '../../Context/AuthContext'
 
 export class Shipping extends Component {
     state = { 
         orders : [],
         show : []
     }
+    static contextType = AuthContext;
 
     async componentDidMount(){
+        const {email} = this.context.currentUser;
         const {data} = await axios.get('/Order.json');
-        let newOrderArray = [];
-        Object.entries(data).map(ordersArray => {
-            return newOrderArray.push(ordersArray[1])
-        });
+
+        const newOrderArray = Object.values(data).filter(key => {
+            return key.UserID === email;
+        })
         console.log(newOrderArray);
+
+        // let newOrderArray = [];
+        // Object.entries(data).map(ordersArray => {
+        //     return newOrderArray.push(ordersArray[1])
+        // });
+        // console.log(newOrderArray);
 
         let showArray = new Array(newOrderArray.length).fill(false);       
         this.setState({ orders : newOrderArray, show : showArray });
@@ -52,9 +61,7 @@ export class Shipping extends Component {
         })
     }
     toggle = (index) => {
-        console.log(index);
         const oldState = this.state.show;
-        console.log(oldState);
         oldState.splice(index,1,!oldState[index]);
         console.log(oldState)
         this.setState({ show : oldState });

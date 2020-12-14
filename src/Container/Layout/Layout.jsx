@@ -5,7 +5,6 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Spinner from '../../Components/UI/Spinner/Spinner.js';
 import Footer from '../../Components/Footer/Footer';
 import PrivateRoute from '../../PrivateRoutes/PrivateRoute'
-import Store from '../Store/Store';
 
 // Using Code Spilitng to load route in a lazy fashion
 const LazyStore = React.lazy( () => import('../../Container/Store/Store'));
@@ -14,8 +13,8 @@ const LazyPaypal = React.lazy( () => import('../../Components/Paypal/Paypal'));
 const LazyOrder = React.lazy( () => import('../../Container/Shipping/Shipping' ));
 const LazyNotFound = React.lazy( () => import('../../Components/Error/NotFound'));
 const LazySignup = React.lazy( () => import('../Signup/Signup'));
-const LazyLogout = React.lazy( () => import('../Logout/Logout'));
 const LazyLogin = React.lazy( () => import('../Login/Login'));
+const LazyLogout = React.lazy( () => import('../Logout/Logout'));
 
 
 //! basic working of application for the state management (Source of truth).
@@ -40,11 +39,10 @@ class Layout extends Component {
                 <BrowserRouter>
                     <Toolbar changeHandler = {(event) =>this.changeHandler(event)} /> 
                     <Switch>
-                        <PrivateRoute exact path= '/Cart/Order' component={LazyOrder} />
                         <PrivateRoute exact path='/Store' search={this.state.search} component={LazyStore} />
-                        <PrivateRoute exact path='/Cart' component={LazyCart} />
+                        <PrivateRoute exact path='/Cart/Order' component={LazyOrder} />
+                        <PrivateRoute path='/Cart' component={LazyCart} />
                         <PrivateRoute exact path='/Checkout' component={LazyPaypal} />
-                        <PrivateRoute exact path='/Logout' component={LazyLogout} />
 
                         <Route exact path='/Signup' render = { () => (
                             <Suspense fallback = {<Spinner />}>
@@ -57,7 +55,7 @@ class Layout extends Component {
                                 <LazyLogin />
                             </Suspense>
                         )}/>
-
+                        
                         <Route exact path='/Logout' render = { () => (
                             <Suspense fallback = {<Spinner />}>
                                 <LazyLogout />

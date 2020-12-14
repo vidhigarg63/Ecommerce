@@ -1,8 +1,32 @@
 .NavList{
+    box-sizing: border-box;
     display: flex;
     align-items: center;
+    justify-content: space-around;
     height: 8vh;  
-    font-family: muli, sans-serif;  
+    font-family: muli, sans-serif; 
+    .DropDownMenu{
+        padding: 10px;
+        background-color: #F0F2F5;
+        min-width: 250px;
+        max-width: fit-content;
+        position: absolute;
+        top: 8vh;
+        left: 83%;
+        border-radius: 5px;
+        li, p{
+            width: 100%;
+            color: black;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            transition: .3s;
+            text-align: left;
+            &:hover{
+                background-color: white;
+            }
+        }
+    } 
 }
 
 a{
@@ -14,3 +38,4 @@ a{
         color: rgba($color: yellow, $alpha: 1.0);
     }
 }
+

@@ -4,14 +4,16 @@ import './PayPal.scss'
 import Spinner from '../UI/Spinner/Spinner'
 import Backdrop from '../UI/Backdrop/Backdrop';
 import axios from '../../Axios/Axios';
-
+import {AuthContext} from '../../Context/AuthContext'
 class Paypal extends React.Component{
   state = {
     loading : false
   }
   paypal = React.createRef()
+  static contextType = AuthContext;
   
   componentDidMount(){
+    const {email} = this.context.currentUser;
     window.paypal
       .Buttons({
         createOrder: (data, actions, err) => {
@@ -19,7 +21,7 @@ class Paypal extends React.Component{
             intent: "CAPTURE",
             purchase_units: [
               {
-                description: 'Shoes',
+                description: email,
                 amount: {
                   currency_code: "CAD",
                   value: this.props.price,
@@ -33,7 +35,8 @@ class Paypal extends React.Component{
           const order = await actions.order.capture();
           const finalOrder = {
             ...order,
-            cart : this.props.cart
+            cart : this.props.cart,
+            UserID : this.context.currentUser.email 
           }
 
           // !Posting data to the database.

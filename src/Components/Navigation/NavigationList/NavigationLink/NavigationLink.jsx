@@ -5,9 +5,13 @@ import './NavigationLink.scss'
 
 const NavigationLink = (props) => {
     return (
-        <NavLink exact to = {props.link}>
-            <li className = 'Navitem'>{props.children}</li>
-        </NavLink>
+        <>
+            <NavLink exact to = {props.link} onClick={props.enter}>
+                <li className = 'Navitem'><i className={props.icon}></i>{props.title}<i className={props.iconBack}></i></li>
+            </NavLink>
+
+            {props.show && props.children}
+        </>
     )
 }
 
