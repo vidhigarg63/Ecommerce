@@ -8,7 +8,7 @@ const Footer = (props) => {
 
     const subscribeHandler = async(event) => {
         const email = ref.current.value;
-        console.log(email);
+        // console.log(email);
         const subscriber = {
             email : email
         }

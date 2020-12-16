@@ -15,9 +15,10 @@ const NavigationList = ( props ) => {
         <ul className = 'NavList'>
             <NavigationLink link = '/Store' icon='fas fa-store' title='Store' />
             <NavigationLink link = '/Cart' icon='fas fa-shopping-cart' title='Cart' />
+            
             <NavigationLink link = '#' iconBack='fas fa-caret-down' show={show} title='My Account ' enter={showDropDown}>
                 <section className='DropDownMenu'>
-                    <DropDown />
+                    <DropDown enter={showDropDown} />
                 </section>
             </NavigationLink>
         </ul>

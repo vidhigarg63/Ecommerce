@@ -12,8 +12,8 @@ const DropDown = (props) => {
     return (
         <>
             <p><i class="fas fa-user"></i> {email}</p>
-            <NavigationLink link = '/Cart/Order' icon='fas fa-history'  title=' Order History' />
-            <NavigationLink link = '/Logout' icon='fas fa-sign-out-alt'  title=' Logout' />
+            <NavigationLink link = '/Cart/Order' icon='fas fa-history'  title=' Order History' enter={props.enter} />
+            <NavigationLink link = '/Logout' icon='fas fa-sign-out-alt'  title=' Logout' enter={props.enter}/>
         </>
     )
 }

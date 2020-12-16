@@ -36,7 +36,7 @@ export class Shipping extends Component {
         return order.purchase_units.map((purchase, index) => {
             return(
                 <ShippingDetails
-                    key = {index}
+                    // key = {index}
                     price = {purchase.amount.currency_code+' '+purchase.amount.value} 
                     name = {purchase.shipping.name.full_name}
                     address = {purchase.shipping.address.address_line_1}
@@ -51,7 +51,7 @@ export class Shipping extends Component {
         return order.cart.map((cart,index) => {
             return (
                 <ShippingCard 
-                    key = {index}
+                    // key = {index}
                     image = {"/Shoes/"+cart.image}
                     description = {cart.description}
                     price = {cart.price}
@@ -68,7 +68,6 @@ export class Shipping extends Component {
     }
 
     render() {
-        
         let userInterface = ''
         if(this.state.orders.length === 0){
             userInterface = <h2>Something went wrong or You haven't place any order yet</h2>

@@ -11,7 +11,7 @@ const Card = (props) => {
             <p className='Description'>{props.description}</p>
             <span className='PriceTag'>$ {props.price}</span>
             <section className='Button'>
-                <Button buttonType = 'BuyNow'>Buy Now</Button>
+                {/* <Button buttonType = 'BuyNow'>Buy Now</Button> */}
                 <Button buttonType = 'AddToCart' clicked = {props.addToCartHandler}>Add to Cart</Button>
             </section>
         </div>

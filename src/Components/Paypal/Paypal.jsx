@@ -5,6 +5,7 @@ import Spinner from '../UI/Spinner/Spinner'
 import Backdrop from '../UI/Backdrop/Backdrop';
 import axios from '../../Axios/Axios';
 import {AuthContext} from '../../Context/AuthContext'
+import emailjs from 'emailjs-com';
 class Paypal extends React.Component{
   state = {
     loading : false
@@ -39,8 +40,26 @@ class Paypal extends React.Component{
             UserID : this.context.currentUser.email 
           }
 
-          // !Posting data to the database.
+          //! Posting data to the database.
           axios.post('/Order.json', finalOrder);
+
+          //! Deleting the Cart if the order is successfull
+          const keys = this.props.cart.map(cart => {
+            return cart.uniqueKey;
+          })
+          console.log(keys);
+
+          keys.forEach( async(key) => {
+            await axios.delete(`/cart/${key}.json`);
+          });
+
+          //! sending Email to user for order status.
+          const orderStatus = {
+            user : this.context.currentUser.email,
+            TransactionID : order.id
+          }
+          await emailjs.send('service_c31x8g4','template_ab2by6g', orderStatus ,'user_XFd6CZeKoty0lxpJ93veU' );
+
           this.setState({ loading : false });
 
           setTimeout(() => {
