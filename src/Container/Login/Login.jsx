@@ -21,8 +21,8 @@ class Login extends Component {
 
         try {
             const response = await app.auth().signInWithEmailAndPassword(email.value, password.value);
-            this.props.history.push('/Store')
-            console.log(response);
+            this.props.match.url === '/Login' ? this.props.history.push('/Store') : this.props.history.push(this.props.match.url+'/AddProduct');
+            // console.log(response);
             
         } catch (error) {
             console.log(error)
@@ -35,6 +35,7 @@ class Login extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div className='Login'>
                 <div className='form'>
@@ -59,10 +60,14 @@ class Login extends Component {
                             <Button buttonType='BuyNow' >Login</Button>
                         </section>
                     </form>
+
+                    { this.props.match.url === '/Login' &&
                         <section className='SignupSection'>
                             <p>Don't have an Account</p>
                             <Button buttonType='remove' clicked={this.SignupHandler}>Sign Up</Button>
                         </section>
+                    }
+
                 </div>
             </div>
         )

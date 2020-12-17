@@ -20,7 +20,8 @@ class Cart extends Component {
             priceAfterDiscount : 0,
             shouldDisable : false,
             error : false,
-            show : false
+            show : false,
+            loading : false,
         }
         this.inputRef = React.createRef();
     }
@@ -28,7 +29,7 @@ class Cart extends Component {
     productChangeHandler = async(id, type) => {
         const oldState = this.state.CartProduct; 
         let updatedObject = null
-        console.log(type);
+        // console.log(type);
         switch(type){
             case 'inc':  updatedObject = oldState.filter(product => {
                 let data = null;   
@@ -66,6 +67,7 @@ class Cart extends Component {
         const totalPrice = oldState.map(product => {
             return product.totalPrice;
         }).reduce((acc, curr) => acc + curr)
+
         const GST = parseFloat((totalPrice * 0.075).toPrecision(4));
         this.setState({ CartProduct : oldState, totalPrice : totalPrice, GST : GST });
     }
@@ -91,7 +93,7 @@ class Cart extends Component {
                     })
                 }
             })
-            console.log(cart);
+            // console.log(cart);
 
             // getting total price
             if(cart.length > 0){
@@ -99,12 +101,17 @@ class Cart extends Component {
                     return product.totalPrice;
                 }).reduce((acc, curr) => acc + curr)
                 const GST = parseFloat((totalPrice * 0.075).toPrecision(4));
-                this.setState({ CartProduct : cart, totalPrice : totalPrice, GST : GST, show : true });
+                this.setState({ CartProduct : cart, totalPrice : totalPrice, GST : GST, show : true, loading : true });
+            }
+            else{
+                console.log("EMPTY CART");
+                this.setState({ CartProduct : [], totalPrice : '', GST : 0, show : false, loading : true });
             }
         }
-        else if(response.data === null){
-            this.setState({ CartProduct : [], totalPrice : '', GST : 0, show : false });
-        }
+        // else{
+        //     console.log("Cart empty")
+        //     this.setState({ CartProduct : [], totalPrice : '', GST : 0, show : false });
+        // }
     }
 
     // PromoCode handler
@@ -145,7 +152,7 @@ class Cart extends Component {
                     return (
                         <CartRow key = {product.uniqueKey}
                             price = {product.price}
-                            image = {"/Shoes/"+product.image}
+                            image = {product.image}
                             style = {{width : '80px', height : '80px'}}
                             description = {product.description}
                             quantity = {product.quantity}
@@ -159,10 +166,11 @@ class Cart extends Component {
             );
             
         }
-        if(!this.state.show){
+        if(!this.state.show && this.state.loading){
             displayData = ( 
             <NotFound NotFound = {empty}>
-                <p>Looks like your cart is Empty</p>
+                <h1>No Cart Found</h1>
+                <p>We can't find your Cart, Look's like you haven't added any item to your cart yet.</p>
             </NotFound>
             )
         }

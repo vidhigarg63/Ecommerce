@@ -2,8 +2,8 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
+    grid-gap: 30px;
     place-items: center;
-    width: 80%;
+    width: 90%;
     margin: 10px auto;
-    min-height: 100vh;
 }

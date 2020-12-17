@@ -6,7 +6,7 @@ import './Card.scss';
 const Card = (props) => {
     return (
         <div className='Card'>
-            <Logo style={props.style} image={`/Shoes/${props.image}`} />
+            <Logo style={props.style} image={props.image} />
             <h3 className='Title'>{props.title}</h3>
             <p className='Description'>{props.description}</p>
             <span className='PriceTag'>$ {props.price}</span>

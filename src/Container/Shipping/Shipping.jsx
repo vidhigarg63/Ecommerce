@@ -5,6 +5,7 @@ import ShippingCard from '../../Components/ShippingCard/ShippingCard';
 import ShippingDetails from '../../Components/ShippingDetails/ShippingDetails';
 import Button from '../../Components/UI/Button/Button'
 import {AuthContext} from '../../Context/AuthContext'
+import NotFound from '../../Components/Error/NotFound';
 
 export class Shipping extends Component {
     state = { 
@@ -52,7 +53,7 @@ export class Shipping extends Component {
             return (
                 <ShippingCard 
                     // key = {index}
-                    image = {"/Shoes/"+cart.image}
+                    image = {cart.image}
                     description = {cart.description}
                     price = {cart.price}
                     quantity = {cart.quantity}
@@ -70,7 +71,12 @@ export class Shipping extends Component {
     render() {
         let userInterface = ''
         if(this.state.orders.length === 0){
-            userInterface = <h2>Something went wrong or You haven't place any order yet</h2>
+            userInterface = (
+                <NotFound>
+                    <h1>Order History Not Found</h1>
+                    <p>We can't find your order history, Look's like you haven't placed any order yet.</p>
+                </NotFound>
+            )
         }else if(this.state.orders.length > 0){
             userInterface = (   
                this.state.orders.map((order, index) => {

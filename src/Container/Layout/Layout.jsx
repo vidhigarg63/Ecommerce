@@ -15,6 +15,7 @@ const LazyNotFound = React.lazy( () => import('../../Components/Error/NotFound')
 const LazySignup = React.lazy( () => import('../Signup/Signup'));
 const LazyLogin = React.lazy( () => import('../Login/Login'));
 const LazyLogout = React.lazy( () => import('../Logout/Logout'));
+const LazyAddProduct = React.lazy( () => import('../Admin/AddProduct'));
 
 
 //! basic working of application for the state management (Source of truth).
@@ -51,6 +52,18 @@ class Layout extends Component {
                         )}/>
 
                         <Route exact path='/Login' render = { () => (
+                            <Suspense fallback = {<Spinner />}>
+                                <LazyLogin />
+                            </Suspense>
+                        )}/>
+
+                        <Route path='/Admin/AddProduct' render = { () => (
+                            <Suspense fallback = {<Spinner />}>
+                                <LazyAddProduct />
+                            </Suspense>
+                        )}/>
+                        
+                        <Route exact path='/Admin' render = { () => (
                             <Suspense fallback = {<Spinner />}>
                                 <LazyLogin />
                             </Suspense>
